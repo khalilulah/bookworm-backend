@@ -32,13 +32,11 @@ export const signUp = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = await User.create([
-      {
-        username,
-        email,
-        password: hashedPassword,
-      },
-    ]);
+    const newUser = await User.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
 
     const token = jwt.sign({ userId: newUser[0]._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
@@ -51,7 +49,7 @@ export const signUp = async (req, res) => {
         token,
         user: {
           id: newUser[0].id,
-          name: newUser[0].username,
+          username: newUser[0].username,
           email: newUser[0].email,
         },
       },
