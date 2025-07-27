@@ -7,9 +7,9 @@ dotenv.config();
 
 export const signUp = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       return res.status(400).json({ message: "enter all fields" });
     }
 
@@ -18,7 +18,7 @@ export const signUp = async (req, res) => {
         .status(400)
         .json({ message: "password should be more than 5 characters" });
     }
-    if (name.length < 3) {
+    if (username.length < 3) {
       return res
         .status(400)
         .json({ message: "password should be more than 2 characters" });
@@ -34,7 +34,7 @@ export const signUp = async (req, res) => {
 
     const newUser = await User.create([
       {
-        name,
+        username,
         email,
         password: hashedPassword,
       },
@@ -49,7 +49,11 @@ export const signUp = async (req, res) => {
       message: "user created",
       data: {
         token,
-        user: newUser[0],
+        user: {
+          id: newUser[0].id,
+          name: newUser[0].username,
+          email: newUser[0].email,
+        },
       },
     });
   } catch (error) {
