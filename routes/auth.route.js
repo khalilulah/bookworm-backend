@@ -5,6 +5,6 @@ import { signIn, signUp } from "../controllers/user.controller.js";
 const router = express.Router();
 
 router.post("/sign-up", signUp);
-router.get("/sign-in", signIn);
+router.post("/sign-in", signIn);
 
 export default router;
