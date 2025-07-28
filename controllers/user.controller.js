@@ -64,18 +64,18 @@ export const signIn = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(409).json({ message: "fill or fields" });
+      return res.status(400).json({ message: "fill or fields" });
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(409).json({ message: "not a valid user" });
+      return res.status(401).json({ message: "not a valid user" });
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(409).json({ message: "invalid password" });
+      return res.status(401).json({ message: "invalid password" });
     }
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
