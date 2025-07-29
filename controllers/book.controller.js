@@ -3,7 +3,7 @@ import cloudinary from "../lib/cloud.js";
 
 export const createBook = async (req, res) => {
   try {
-    const { title, rating, caption, user, image } = req.body;
+    const { title, rating, caption, image } = req.body;
     const userId = req.user._id;
 
     if (!userId) {
@@ -32,7 +32,7 @@ export const createBook = async (req, res) => {
 
     await newBook.save();
 
-    res.status(200).json({ message: newBook });
+    res.status(201).json({ message: newBook });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
