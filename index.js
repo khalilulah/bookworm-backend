@@ -15,6 +15,7 @@ app.listen(PORT, () => {
 
 app.use("/api/user", authRoutes);
 app.use("/api/user", bookRoutes);
+console.log("Cloudinary Secret:", process.env.API_SECRET);
 
 app.get("/", (req, res) => {
   res.send("i'm in");

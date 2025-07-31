@@ -28,6 +28,7 @@ export const signUp = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "user already exists" });
     }
+    const profileImage = `https://api.dicebear.com/9.x/avataaars/svg?seed=${username}`;
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -36,6 +37,7 @@ export const signUp = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      profileImage,
     });
 
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
