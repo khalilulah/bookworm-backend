@@ -41,7 +41,7 @@ export const createBook = async (req, res) => {
 export const getBooks = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 2;
+    const limit = parseInt(req.query.limit) || 3;
     const skip = (page - 1) * limit;
 
     const userId = req.user._id;
