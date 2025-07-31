@@ -26,7 +26,7 @@ export const createBook = async (req, res) => {
       title,
       rating,
       caption,
-      image,
+      image: imageUrl,
       user: userId,
     });
 
@@ -51,6 +51,7 @@ export const getBooks = async (req, res) => {
     }
 
     const books = await Book.find({ user: userId })
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .populate("user", "username profileImage");
@@ -59,7 +60,7 @@ export const getBooks = async (req, res) => {
       return res.status(400).json({ message: "books not found" });
     }
 
-    const totalBooks = await Book.countDocuments();
+    const totalBooks = await Book.countDocuments({ user: userId });
 
     res.status(200).json({
       success: true,
