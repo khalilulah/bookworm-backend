@@ -53,7 +53,7 @@ export const getBooks = async (req, res) => {
     const books = await Book.find({ user: userId })
       .skip(skip)
       .limit(limit)
-      .populate("user", "name profileImage");
+      .populate("user", "username profileImage");
 
     if (!books) {
       return res.status(400).json({ message: "books not found" });
