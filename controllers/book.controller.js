@@ -126,7 +126,7 @@ export const deleteBook = async (req, res) => {
     const book = await Book.findById(id);
 
     if (!book) {
-      return res(404).json({ message: "book not found" });
+      return res.staus(404).json({ message: "book not found" });
     }
 
     if (!book.user.equals(userId)) {
@@ -149,6 +149,6 @@ export const deleteBook = async (req, res) => {
     }
     res.status(200).json({ message: "deleted" });
   } catch (error) {
-    res.status(200).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };

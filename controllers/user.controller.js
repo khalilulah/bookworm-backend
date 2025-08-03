@@ -40,6 +40,7 @@ export const signUp = async (req, res) => {
       email,
       password: hashedPassword,
       profileImage,
+      createdAt: new Date(),
     });
 
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
@@ -56,6 +57,7 @@ export const signUp = async (req, res) => {
           username: newUser.username,
           email: newUser.email,
           profileImage: newUser.profileImage,
+          createdAt: newUser.createdAt,
         },
       },
     });
