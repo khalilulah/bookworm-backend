@@ -21,12 +21,14 @@ export const createBook = async (req, res) => {
     // upload image to cloudinary
     const uploadResponse = await cloudinary.uploader.upload(image);
     const imageUrl = uploadResponse.secure_url;
+    const publicId = uploadResponse.public_id;
 
     const newBook = new Book({
       title,
       rating,
       caption,
       image: imageUrl,
+      imagePublicId: publicId,
       user: userId,
     });
 
@@ -126,7 +128,7 @@ export const deleteBook = async (req, res) => {
     const book = await Book.findById(id);
 
     if (!book) {
-      return res.staus(404).json({ message: "book not found" });
+      return res.status(404).json({ message: "book not found" });
     }
 
     if (!book.user.equals(userId)) {
@@ -138,14 +140,16 @@ export const deleteBook = async (req, res) => {
     if (book.image && book.image.includes("cloudinary")) {
       try {
         const publicId = book.image.split("/").pop().split(".")[0];
-        await cloudinary.uploader.destroy(publicId);
+        await cloudinary.uploader.destroy(book.imagePublicId);
       } catch (deleteError) {
         console.error("Cloudinary delete error:", deleteError);
       }
     }
     const deletedBook = await Book.findByIdAndDelete(id);
     if (!deletedBook) {
-      return res(401).json({ message: "unable to delete, book not found" });
+      return res
+        .status(401)
+        .json({ message: "unable to delete, book not found" });
     }
     res.status(200).json({ message: "deleted" });
   } catch (error) {
