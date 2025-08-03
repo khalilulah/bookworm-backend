@@ -140,7 +140,7 @@ export const deleteBook = async (req, res) => {
         const publicId = book.image.split("/").pop().split(".")[0];
         await cloudinary.uploader.destroy(publicId);
       } catch (deleteError) {
-        console.log(deleteError);
+        console.error("Cloudinary delete error:", deleteError);
       }
     }
     const deletedBook = await Book.findByIdAndDelete(id);
