@@ -46,13 +46,13 @@ export const getBooks = async (req, res) => {
     const limit = parseInt(req.query.limit) || 3;
     const skip = (page - 1) * limit;
 
-    const userId = req.user._id;
+    // const userId = req.user._id;
 
-    if (!userId) {
-      return res.status(400).json({ message: "invalid user" });
-    }
+    // if (!userId) {
+    //   return res.status(400).json({ message: "invalid user" });
+    // }
 
-    const books = await Book.find({ user: userId })
+    const books = await Book.find()
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -62,7 +62,7 @@ export const getBooks = async (req, res) => {
       return res.status(400).json({ message: "books not found" });
     }
 
-    const totalBooks = await Book.countDocuments({ user: userId });
+    const totalBooks = await Book.countDocuments();
 
     res.status(200).json({
       success: true,
